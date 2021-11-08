@@ -7,7 +7,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +27,7 @@ class BasketTest {
     void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         bogofDiscount = new BOGOFDiscount();
         bogofOffer = new Offer("Offer-1", digestives, bogofDiscount);
-        List<Offer> currentOffers = new ArrayList<Offer>();
+        Set<Offer> currentOffers = new HashSet<>();
         currentOffers.add(bogofOffer);
 
         Field field = DiscountFinder.class.getDeclaredField("currentOffers");
@@ -44,12 +46,12 @@ class BasketTest {
 
     static Stream<Arguments> basketProvidesTotalValue() {
         return Stream.of(
-                multipleItemsPricedPerUnitBOGOFF(),
                 noItems(),
                 aSingleItemPricedPerUnit(),
                 multipleItemsPricedPerUnit(),
                 aSingleItemPricedByWeight(),
-                multipleItemsPricedByWeight()
+                multipleItemsPricedByWeight(),
+                multipleItemsPricedPerUnitBOGOFF()
         );
     }
 
@@ -69,7 +71,7 @@ class BasketTest {
     }
 
     private static Arguments multipleItemsPricedPerUnitBOGOFF() {
-        return Arguments.of("multiple items priced per unit to avail BOGOF", "5.14",
+        return Arguments.of("multiple items priced per unit to avail BOGOF discount", "5.14",
                 Arrays.asList(aPackOfDigestives(), aPintOfMilk(), aPackOfDigestives(), aPackOfDigestives(),
                         aPackOfDigestives(), aPackOfDigestives()));
     }
