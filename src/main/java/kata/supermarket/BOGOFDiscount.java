@@ -1,6 +1,7 @@
 package kata.supermarket;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +20,11 @@ public class BOGOFDiscount implements Discount {
         }
 
         int freeQuantity = offerItemList.size() / 2;
-        BigDecimal discountAmount = offerItemList.get(0).price().multiply(new BigDecimal(freeQuantity)).setScale(2,
-                BigDecimal.ROUND_HALF_UP);
+        BigDecimal discountAmount = offerItemList.get(0)
+                                                 .price()
+                                                 .multiply(new BigDecimal(freeQuantity))
+                                                 .setScale(2,
+                                                         RoundingMode.HALF_UP);
         appliedOffer.setDiscountAmount(discountAmount);
         return appliedOffer;
     }
